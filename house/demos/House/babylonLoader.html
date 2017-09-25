@@ -1,0 +1,141 @@
+<!-- 
+/*!
+ * 3D Roam Demo 
+ * Johnny Xu(徐景周) - v1.0.0 (2017-08-30)
+ * https://github.com/xujingzhou | Released under MIT license
+ */
+-->
+
+<!doctype html>
+<html>  
+<head>  
+<meta charset="utf-8">  
+    <title>Example 03.01 - Ambient Light</title>  
+    <script type="text/javascript" src="../../js/threejs/three.js"></script>  
+    <script type="text/javascript" src="../../js/threejs/OBJLoader.js"></script>  
+    <script type="text/javascript" src="../../js/threejs/MTLLoader.js"></script>  
+    <script type="text/javascript" src="..../../js/threejs/OBJMTLLoader.js"></script> 
+    <script type="text/javascript" src="../../js/threejs/jquery-1.9.0.js"></script>  
+    <script type="text/javascript" src="../../js/threejs/OrbitControls.js"></script> 
+	<style>canvas { width: 100%; height: 100% }</style> 
+</head>  
+<body >  
+
+<!-- Div which will hold the Output -->  
+<script type="text/javascript">  
+
+    $(function init() {    
+        // create a scene, that will hold all our elements such as objects, cameras and lights.  
+        var scene = new THREE.Scene();                   
+        // create a camera, which defines where we're looking at.  
+        var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);  
+          
+        // create a render and set the size  
+		var renderer = new THREE.WebGLRenderer();  
+        renderer.setSize(window.innerWidth, window.innerHeight); 
+		renderer.setClearColor(0x000000,1.0);
+        renderer.shadowMapEnabled = true;  
+        var windowHalfX = window.innerWidth/2;
+		var windowHalfY = window.innerHeight/2;
+          // add the output of the renderer to the html element  
+       // $("#WebGL-output").append(renderer.domElement); 
+         document.getElementsByTagName('body')[0].appendChild(renderer.domElement);        
+        //添加模型  
+var onProgress = function(xhr) {
+    if (xhr.lengthComputable) {
+        var percentComplete = xhr.loaded / xhr.total * 100;
+        console.log(Math.round(percentComplete, 2) + '% downloaded');
+    }
+};
+ 
+        var mesh = null;
+		var onError = function(xhr) {};		 
+		var mtlLoader = new THREE.MTLLoader();
+		mtlLoader.setPath('../../model/');
+		mtlLoader.load('11.mtl', function(materials) {
+		 
+			materials.preload();
+		    var v1 = new THREE.Vector3( 0, 0, 1 );
+			var objLoader = new THREE.OBJLoader();
+			objLoader.setMaterials(materials);
+			objLoader.setPath('../../model/');
+			objLoader.load('11.obj', function(object) {
+				object.rotation.x = -Math.PI/2;
+				object.rotation.y = 0;
+				object.rotation.z = -Math.PI/2;
+				object.position.x = 0;
+				object.position.y = -30;
+				object.position.z = -20;
+				object.scale.x = 0.03;
+				object.scale.y = 0.03;
+				object.scale.z = 0.03;
+				object.rotateOnAxis (v1, Math.PI);
+				mesh = object;
+				scene.add(mesh);
+		 
+			}, onProgress, onError);
+		 
+		});
+
+        // 相机在场景中的位置和指向    
+		camera.position.x = 0;  
+        camera.position.y = 50;  
+        camera.position.z = 130; 
+		camera.lookAt(scene.position);  
+          
+        //添加控制  
+        var orbitControls = new THREE.OrbitControls(camera);  
+        //orbitControls.autoRotate = true;//设置平面自动旋转 
+        var clock = new THREE.Clock();  
+          
+        // 增加外界环境光照  
+        var ambiColor = "#8b8a87";  
+        var ambientLight = new THREE.AmbientLight(ambiColor);  
+        scene.add(ambientLight);  
+  
+        // 为了增加阴影添加一个点光源  
+        var spotLight = new THREE.SpotLight(0xffffff);  
+        spotLight.position.set(-40, 100, -10);   
+        spotLight.castShadow = true;  
+        scene.add(spotLight);   
+        // call the render function   
+        var controls = new function () {  
+            this.rotationSpeed = 0.01;  
+            this.bouncingSpeed = 0;  
+            this.ambientColor = ambiColor;  
+        }  
+    
+        render();  
+          
+        //监听窗口时间使其自适应  
+        window.addEventListener( 'resize', onWindowResize, false );  
+        window.addEventListener( 'mousemove', onDocumentMouseMove, false );  
+          
+        function render() {  
+               
+            var delta = clock.getDelta();  
+            orbitControls.update(delta);  
+            requestAnimationFrame(render);         
+			//mesh.rotation.z += 0.01;
+            renderer.render(scene, camera);  
+        }  
+                    
+        //窗口监听事件  
+        function onWindowResize( event ) {  
+            SCREEN_WIDTH = window.innerWidth;  
+            SCREEN_HEIGHT = window.innerHeight;  
+            renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );  
+            camera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT;  
+            camera.updateProjectionMatrix();    
+        }  
+        //鼠标监听事件  
+        function onDocumentMouseMove(event) {  
+            mouseX = ( event.clientX - windowHalfX );  
+            mouseY = ( event.clientY - windowHalfY );  
+        }                    
+    });  
+  
+</script>  
+
+</body>  
+</html>  

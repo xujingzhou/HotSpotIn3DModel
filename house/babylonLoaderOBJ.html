@@ -1,0 +1,78 @@
+<!-- 
+/*!
+ * 3D Roam Demo 
+ * Johnny Xu(Ðì¾°ÖÜ) - v1.0.0 (2017-08-30)
+ * https://github.com/xujingzhou | Released under MIT license
+ */
+-->
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Using babylon.js - How to load a scene</title>
+	
+	<script src="js/hand.js"></script>
+    <script src="js/babylon.custom.js"></script>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #renderCanvas {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="renderCanvas"></canvas>
+
+	<script>
+    if (BABYLON.Engine.isSupported()) {
+
+        var canvas = document.getElementById("renderCanvas");
+        var engine = new BABYLON.Engine(canvas, true);
+        var scene = new BABYLON.Scene(engine);
+
+		var light = new BABYLON.HemisphericLight("Hemi0", new BABYLON.Vector3(0, 1, 0), scene);
+		var camera = new BABYLON.ArcRotateCamera("Camera", 0, 0.8, 100, new BABYLON.Vector3.Zero(), scene);
+
+		BABYLON.SceneLoader.ImportMesh("", "Scenes/Mansion/", "Mansion.babylon", scene, function(newMeshes, particleSystems) {
+
+			camera.target = newMeshes[0];
+
+			/* var monkey = newMeshes[0];
+			monkey.scaling.x = 70;
+			monkey.scaling.y = 70;
+			monkey.scaling.z = 70;
+			monkey.position.z = -48;
+			monkey.position.y = 20;
+			monkey.position.x = 0;
+			var platform = newMeshes[1];
+			platform.material = new BABYLON.StandardMaterial("texture1", scene); 
+			*/
+		});
+
+		scene.activeCamera.attachControl(canvas);
+
+		engine.runRenderLoop(function() {
+			scene.render();
+
+		});
+
+		scene.registerBeforeRender(function () {
+			light.position = camera.position;
+		});
+
+		window.addEventListener("resize", function (){
+			engine.resize();
+		});
+
+    }
+	</script>
+
+</body>
+</html>

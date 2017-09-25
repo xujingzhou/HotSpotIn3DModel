@@ -1,0 +1,21 @@
+.videobg {
+
+    position: absolute;  
+	top: 50%;  
+	left: 50%;   
+	margin: auto;
+	-webkit-transform: translate(-50%,-50%);     
+	-ms-transform: translate(-50%,-50%);
+	transform: translate(-50%,-50%);
+	background: rgba(146, 137, 183, 0.5);
+}
+
+#container {
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+	background: rgba(146, 137, 183, 0.5);
+	margin:0 auto;
+	position: relative;
+}
+

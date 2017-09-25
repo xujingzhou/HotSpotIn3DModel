@@ -1,0 +1,51 @@
+<!-- 
+/*!
+ * 3D Roam Demo 
+ * Johnny Xu(徐景周) - v1.0.0 (2017-08-30)
+ * https://github.com/xujingzhou | Released under MIT license
+ */
+-->
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>模型展示</title>
+	<meta http-equiv="Content-Type" content="text/html" charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #renderCanvas {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+
+	<link href="../../css/index.css" rel="stylesheet" />
+    <script src="../../js/babylon.custom.js"></script>
+	<script src="dragdrop.js"></script>
+    <script src="loadobj.js"></script>
+</head>
+<body>
+    <canvas id="renderCanvas"></canvas>
+	<div id="status"></div>
+    <div id="controlPanel">
+        <div id="controlsZone">
+            <p>
+                <button id="fullscreen">全屏</button>
+            </p>
+        </div>
+        <div class="tag">面板</div>
+        <div class="tag" id="clickableTag"></div>
+    </div>
+    
+    <div id="notSupported" class="hidden">抱歉，你的浏览器不支持WebGL......</div>
+    <script src="../../js/loaderCustoms.js"></script>
+</body>
+</html>
