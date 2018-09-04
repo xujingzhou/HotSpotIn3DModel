@@ -1,7 +1,7 @@
 # HotSpot
  
 
-A hot spot demo by BabylonJS and Three.js. 
+The hotspot implement by BabylonJS and Three.js for 3D mode. 
   
    
 Johnny Xu   
